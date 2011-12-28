@@ -6,11 +6,10 @@ import java.io.OutputStreamWriter;
 
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
-import org.junit.Assert;
 
-public class ServiceExampleTest extends HiveTestService {
+public class ServiceHiveTest extends HiveTestService {
 
-  public ServiceExampleTest() throws IOException {
+  public ServiceHiveTest() throws IOException {
     super();
   }
 
@@ -22,12 +21,13 @@ public class ServiceExampleTest extends HiveTestService {
     bw.write("1\n");
     bw.write("2\n");
     bw.close();
+    ServiceHive sh = new ServiceHive();
 
-    client.execute("create table  atest  (num int)");
-    client.execute("load data local inpath '" + p.toString() + "' into table atest");
-    client.execute("select count(1) as cnt from atest");
-    String row = client.fetchOne();
-    assertEquals(row, "2");
-    client.execute("drop table atest");
+    sh.client.execute("create table  atest  (num int)");
+    sh.client.execute("load data local inpath '" + p.toString() + "' into table atest");
+    sh.client.execute("select count(1) as cnt from atest");
+    String row = sh.client.fetchOne();
+    assertEquals("2", row);
+    sh.client.execute("drop table atest");
   }
 }
