@@ -1,196 +1,220 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.jointhegrid</groupId>
-	<artifactId>hive_test</artifactId>
-	<name>hive_test</name>
-	<version>1.0.0-SNAPSHOT</version>
-	<description></description>
-	<packaging>jar</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.jointhegrid</groupId>
+  <artifactId>hive_test</artifactId>
+  <name>hive_test</name>
+  <version>1.0.0-SNAPSHOT</version>
+  <description></description>
+  <packaging>jar</packaging>
 	
-	<properties>
-	</properties>
-	<dependencies>
-		<dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-anttasks</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
-		<dependency>
-			<groupId>org.apache.hive</groupId>
-			<artifactId>hive-cli</artifactId>
-			<version>0.7.1-SNAPSHOT</version>
-		</dependency>
-		 <dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-common</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
-		 <dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-contrib</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
-		<dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-exec</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
-		 <dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-metastore</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
-		 <dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-serde</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
-		 <dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-service</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
-		 <dependency>
-                        <groupId>org.apache.hive</groupId>
-                        <artifactId>hive-shims</artifactId>
-                        <version>0.7.1-SNAPSHOT</version>
-                </dependency>
+  <properties>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-anttasks</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-cli</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-common</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-contrib</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-exec</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-metastore</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-serde</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-service</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
+		
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-shims</artifactId>
+      <version>0.7.1-SNAPSHOT</version>
+    </dependency>
 
-		<dependency>
-	        	<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-core</artifactId>
-			<version>0.20.2</version>
-			<scope>provided</scope>
-        	</dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-core</artifactId>
+      <version>0.20.2</version>
+      <scope>provided</scope>
+    </dependency>
         
-		 <dependency>
-                	<groupId>commons-logging</groupId>
-	                <artifactId>commons-logging</artifactId>
-        	        <version>1.0.4</version>
-                	<scope>provided</scope>
-	        </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <scope>provided</scope>
+    </dependency>
         
-               <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                        <version>4.8.2</version>
-                        <scope>test</scope>
-                </dependency>
-              <dependency>
-                        <groupId>org.apache.hadoop</groupId>
-                        <artifactId>hadoop-test</artifactId>
-                        <version>0.20.2</version>
-                        <scope>provided</scope>
-                </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-test</artifactId>
+      <version>0.20.2</version>
+      <scope>provided</scope>
+    </dependency>
 
-		 <dependency>
-                	<groupId>log4j</groupId>
-	                <artifactId>log4j</artifactId>
-        	        <version>1.2.15</version>
-                	<type>jar</type>
-	                <scope>compile</scope>	
-		</dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.15</version>
+      <type>jar</type>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.jms</groupId>
+          <artifactId>jms</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jdmk</groupId>
+          <artifactId>jmxtools</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.sun.jmx</groupId>
+          <artifactId>jmxri</artifactId>
+        </exclusion>
 
-		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>3.0.1</version>
-		</dependency>
+      </exclusions>
 
-		<dependency>
-			<groupId>org.apache.thrift</groupId>
-			<artifactId>libfb303</artifactId>
-			<version>0.6.1</version>
-		</dependency>
+    </dependency>
 
-<dependency>
-    <groupId>org.apache.thrift</groupId>
-    <artifactId>libthrift</artifactId>
-    <version>0.7.0</version>
-</dependency>
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr-runtime</artifactId>
+      <version>3.0.1</version>
+    </dependency>
 
+    <dependency>
+      <groupId>org.apache.thrift</groupId>
+      <artifactId>libfb303</artifactId>
+      <version>0.6.1</version>
+    </dependency>
 
-<dependency>
-    <groupId>javax.jdo</groupId>
-    <artifactId>jdo2-api</artifactId>
-    <version>2.3-eb</version>
-</dependency>
-
-<dependency>
-    <groupId>org.datanucleus</groupId>
-    <artifactId>datanucleus-core</artifactId>
-    <version>2.0.3</version>
-</dependency>
-
-<dependency>
-    <groupId>org.datanucleus</groupId>
-    <artifactId>datanucleus-rdbms</artifactId>
-    <version>2.0.3</version>
-</dependency>
-
-<dependency>
-    <groupId>org.datanucleus</groupId>
-    <artifactId>datanucleus-connectionpool</artifactId>
-    <version>2.0.3</version>
-</dependency>
-
-<dependency>
-    <groupId>commons-pool</groupId>
-    <artifactId>commons-pool</artifactId>
-    <version>1.5.4</version>
-</dependency>
-
-<dependency>
-    <groupId>commons-dbcp</groupId>
-    <artifactId>commons-dbcp</artifactId>
-    <version>1.4</version>
-</dependency>
-
-<dependency>
-    <groupId>org.apache.derby</groupId>
-    <artifactId>derby</artifactId>
-    <version>10.8.1.2</version>
-</dependency>
-
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-api</artifactId>
-    <version>1.6.1</version>
-</dependency>
+    <dependency>
+      <groupId>org.apache.thrift</groupId>
+      <artifactId>libthrift</artifactId>
+      <version>0.7.0</version>
+    </dependency>
 
 
-	</dependencies>
-	<build>
-  		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.5.1</version>
-					<configuration>
-						<projectNameTemplate>[artifactId]</projectNameTemplate>
-						<wtpmanifest>true</wtpmanifest>
-						<wtpapplicationxml>true</wtpapplicationxml>
-						<wtpversion>1.5</wtpversion>
-						<additionalBuildcommands>
-							<buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
-							<buildcommand>org.maven.ide.eclipse.maven2Builder</buildcommand>
-						</additionalBuildcommands>
-						<additionalProjectnatures>
-							<projectnature>org.eclipse.jdt.core.javanature</projectnature>
-							<projectnature>org.maven.ide.eclipse.maven2Nature</projectnature>
-						</additionalProjectnatures>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>	
-	</build>
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>2.3-eb</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-core</artifactId>
+      <version>2.0.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-rdbms</artifactId>
+      <version>2.0.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-connectionpool</artifactId>
+      <version>2.0.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.5.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>10.8.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+
+
+  </dependencies>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.5.1</version>
+          <configuration>
+            <projectNameTemplate>[artifactId]</projectNameTemplate>
+            <wtpmanifest>true</wtpmanifest>
+            <wtpapplicationxml>true</wtpapplicationxml>
+            <wtpversion>1.5</wtpversion>
+            <additionalBuildcommands>
+              <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+              <buildcommand>org.maven.ide.eclipse.maven2Builder</buildcommand>
+            </additionalBuildcommands>
+            <additionalProjectnatures>
+              <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+              <projectnature>org.maven.ide.eclipse.maven2Nature</projectnature>
+            </additionalProjectnatures>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <repositories>
+    <repository>
+      <id>riptano</id>
+      <url>http://mvn.riptano.com/content/repositories/snapshots</url>
+    </repository>
+
+  </repositories>
 </project>
