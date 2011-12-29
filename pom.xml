@@ -4,7 +4,7 @@
   <groupId>com.jointhegrid</groupId>
   <artifactId>hive_test</artifactId>
   <name>hive_test</name>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>3.0.0-SNAPSHOT</version>
   <description></description>
   <packaging>jar</packaging>
 	
@@ -14,49 +14,56 @@
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-anttasks</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-cli</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-common</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-contrib</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-exec</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-metastore</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-serde</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-service</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
 		
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-shims</artifactId>
-      <version>0.7.1-SNAPSHOT</version>
+      <version>0.8.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.hive</groupId>
+      <artifactId>hive-builtins</artifactId>
+      <version>0.8.0</version>
+    </dependency>
+
 
     <dependency>
       <groupId>org.apache.hadoop</groupId>
