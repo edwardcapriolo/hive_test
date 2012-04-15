@@ -2,6 +2,17 @@
 <configuration>
 
 <property>
+  <name>hive.exec.mode.local.auto</name>
+  <value>true</value>
+</property>
+
+<property>
+  <name>hive.mapred.local.mem</name>
+  <value>true</value>
+</property>
+
+
+<property>
   <name>javax.jdo.option.ConnectionURL</name>
   <!--<value>jdbc:derby:;databaseName=/tmp/metastore_db;create=true</value>-->
   <value>jdbc:derby:memory:metastore_db;create=true</value>
