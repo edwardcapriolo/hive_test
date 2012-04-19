@@ -51,6 +51,11 @@ public abstract class HiveTestBase extends HadoopTestCase {
           env.put("HADOOP_HOME", hadoopHome.getAbsolutePath());
           EnvironmentHack.setEnv(env);
         }
+	File target = new File("target/hadoop-0.20.2");
+        if ( target.exists() ){
+          env.put("HADOOP_HOME", target.getAbsolutePath());
+          EnvironmentHack.setEnv(env);
+        }
       }
     }
   }
