@@ -1,5 +1,0 @@
-A way to make hive unit tests easy from java code. The only external thing at this point is:
-You eather need to:
-have hadoop 0.20.X in your path ie /usr/bin/hadoop
-set your HADOOP_HOME environment variable
-have hadoop tar extracted to  $home/hadoop/hadoop-0.20.2-local
