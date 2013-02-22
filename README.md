@@ -6,22 +6,33 @@ A simple way to test Hadoop and Hive using maven.
 Setup with Maven
 -----
 
-Run these commands initially or whenever your project is cleaned.
+By default, we're set to download a local copy of Hadoop when you first build Hive Test, or whenever the project is cleaned, just before running our test cases.
+
+You can force a redownload and installation of Hadoop by manually activating the download-hadoop profile
+
+    mvn --activate-profiles download-hadoop test
+
+You can also perform the download and extraction process independent of testing.
 
 Download Hadoop (into the maven target directory)
 
-    mvn wagon:download-single
+    mvn --activate-profiles download-hadoop wagon:download-single
 
 Extract Hadoop  (into the maven target directory)
 
-    mvn exec:exec
+    mvn --activate-profiles download-hadoop exec:exec
 
 Alternative
 -----
 
-* hadoop 0.20.X in your path ie /usr/bin/hadoop
+We'll skip attempting to download and use a local copy of Hadoop if any of the following are true
+
 * set your HADOOP_HOME environment variable to a hadoop distribution
-* hadoop tar extracted to  $home/hadoop/hadoop-0.20.2-local
+* hadoop tar extracted to  $home/hadoop/hadoop-0.20.2_local
+
+Hive Test will work so long as you have Hadoop 0.20.X in your path, i.e. /usr/bin/hadoop. In this case, you'll want to deactivate the hadoop download.
+
+    mvn --activate-profiles -download-hadoop test
 
 Usage
 -----
