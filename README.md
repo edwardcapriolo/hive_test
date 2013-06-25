@@ -32,7 +32,7 @@ We'll skip attempting to download and use a local copy of Hadoop if any of the f
 
 Hive Test will work so long as you have Hadoop 0.20.X in your path, i.e. /usr/bin/hadoop. In this case, you'll want to deactivate the hadoop download.
 
-    mvn --activate-profiles -download-hadoop test
+    mvn --activate-profiles -hadoop-home-defined test
 
 Usage
 -----
