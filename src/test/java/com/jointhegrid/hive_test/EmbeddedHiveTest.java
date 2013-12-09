@@ -42,7 +42,7 @@ public class EmbeddedHiveTest extends HiveTestBase {
     Assert.assertEquals(0, eh.doHiveCommand("create table blax (id int)"));
     Assert.assertEquals(0, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax"));
     Assert.assertEquals(0, eh.doHiveCommand("create table blbx (id int)"));
-    Assert.assertEquals(9, eh.doHiveCommand("create table blax (id int)"));
+    Assert.assertEquals(1, eh.doHiveCommand("create table blax (id int)"));
     Assert.assertEquals(0, eh.doHiveCommand("select count(1) from blax"));
   }
 }
