@@ -4,7 +4,7 @@
   <groupId>com.jointhegrid</groupId>
   <artifactId>hive_test</artifactId>
   <name>hive_test</name>
-  <version>4.0.0-SNAPSHOT</version>
+  <version>4.1.0</version>
   <description></description>
   <packaging>jar</packaging>
 	
