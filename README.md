@@ -1,7 +1,7 @@
 Hive_test
 =============
 
-A simple way to test Hadoop and Hive using maven.
+A simple way to test Hadoop and Hive using Maven.
 
 Setup with Maven
 -----
@@ -64,3 +64,7 @@ and a local HiveThriftService. This allows us to create unit tests very easily.
         client.execute("drop table atest");
       }
     }
+
+-----
+When compiling the project, you may see an error regarding the jdo2-api:2.3-ec dependency.
+Check [this link](https://issues.apache.org/jira/browse/HIVE-4114) to fix it.

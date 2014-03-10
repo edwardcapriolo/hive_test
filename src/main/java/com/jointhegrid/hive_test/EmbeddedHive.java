@@ -15,46 +15,70 @@ limitations under the License.
 */
 package com.jointhegrid.hive_test;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.jointhegrid.hive_test.common.PropertyNames;
+import com.jointhegrid.hive_test.common.Response;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.ql.CommandNeedRetryException;
 import org.apache.hadoop.hive.ql.Driver;
 import org.apache.hadoop.hive.ql.processors.CommandProcessor;
 import org.apache.hadoop.hive.ql.processors.CommandProcessorFactory;
+import org.apache.hadoop.hive.ql.processors.CommandProcessorResponse;
 import org.apache.hadoop.hive.ql.session.SessionState;
+import org.eclipse.jdt.internal.core.Assert;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EmbeddedHive {
+    private static Logger logger = Logger.getLogger(EmbeddedHive.class.getName());
 
-  public SessionState ss;
-  public HiveConf c;
+    private SessionState ss;
+    private HiveConf c;
 
-  public EmbeddedHive() {
-    //SessionState.initHiveLog4j(); // gone in 0.8.0
-    ss = new SessionState(new HiveConf(EmbeddedHive.class));
-    SessionState.start(ss);
-    c = (HiveConf) ss.getConf();
-  }
+    public EmbeddedHive(Properties properties) {
+        Assert.isNotNull(properties.get(PropertyNames.HIVE_JAR.toString()), "hive.jar property must be set!");
 
-  public int doHiveCommand(String cmd) {
-    int ret = -40;
-    String cmd_trimmed = cmd.trim();
-    String[] tokens = cmd_trimmed.split("\\s+");
-    String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
-    CommandProcessor proc = CommandProcessorFactory.get(tokens[0], c);
-    if (proc instanceof Driver) {
-      try {
-        ret = proc.run(cmd).getResponseCode();
-      } catch (CommandNeedRetryException ex) {
-        Logger.getLogger(EmbeddedHive.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    } else {
-      try {
-        ret = proc.run(cmd_1).getResponseCode();
-      } catch (CommandNeedRetryException ex) {
-        Logger.getLogger(EmbeddedHive.class.getName()).log(Level.SEVERE, null, ex);
-      }
+        HiveConf conf = new HiveConf();
+        conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
+        //this line is required so that the embedded derby works well
+        //TODO load this filename from some property.
+
+        ss = new SessionState(new HiveConf(conf, EmbeddedHive.class));
+        SessionState.start(ss);
+        c = ss.getConf();
     }
-    return ret;
-  }
+
+    public Response doHiveCommand(String cmd) {
+        //TODO Ensure the exec jar exists, download otherwise or fail if fails to do so.
+        ArrayList<String> results = new ArrayList<String>();
+        CommandProcessorResponse processorResponse = null;
+        String cmd_trimmed = cmd.trim();
+        String[] tokens = cmd_trimmed.split("\\s+");
+        String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
+        CommandProcessor proc = CommandProcessorFactory.get(tokens[0], c);
+        if (proc instanceof Driver) {
+            try {
+                processorResponse = proc.run(cmd);
+            } catch (CommandNeedRetryException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                processorResponse = proc.run(cmd_1);
+            } catch (CommandNeedRetryException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        try {
+            ((Driver) proc).getResults(results);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, null, e);
+        } catch (CommandNeedRetryException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+        return new Response((processorResponse != null) ? processorResponse.getResponseCode() : -40, results);
+    }
 }

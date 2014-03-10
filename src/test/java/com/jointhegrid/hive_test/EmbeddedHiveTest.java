@@ -15,34 +15,37 @@ limitations under the License.
 */
 package com.jointhegrid.hive_test;
 
+import com.jointhegrid.hive_test.util.TestingUtil;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.Path;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.Path;
-import org.junit.Assert;
+import static com.jointhegrid.hive_test.common.ResponseStatus.FAILURE;
+import static com.jointhegrid.hive_test.common.ResponseStatus.SUCCESS;
 
 public class EmbeddedHiveTest extends HiveTestBase {
 
-  public EmbeddedHiveTest() throws IOException {
-    super();
-  }
+    public EmbeddedHiveTest() throws IOException {
+        super();
+    }
 
-  public void testUseEmbedded() throws IOException {
-    EmbeddedHive eh = new EmbeddedHive();
-    Path p = new Path(this.ROOT_DIR, "bfile");
+    public void testUseEmbedded() throws IOException {
+        EmbeddedHive eh = new EmbeddedHive(TestingUtil.getDefaultProperties());
+        Path p = new Path(this.ROOT_DIR, "bfile");
 
-    FSDataOutputStream o = this.getFileSystem().create(p);
-    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(o));
-    bw.write("1\n");
-    bw.write("2\n");
-    bw.close();
+        FSDataOutputStream o = this.getFileSystem().create(p);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(o));
+        bw.write("1\n");
+        bw.write("2\n");
+        bw.close();
 
-    Assert.assertEquals(0, eh.doHiveCommand("create table blax (id int)"));
-    Assert.assertEquals(0, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax"));
-    Assert.assertEquals(0, eh.doHiveCommand("create table blbx (id int)"));
-    Assert.assertEquals(9, eh.doHiveCommand("create table blax (id int)"));
-    Assert.assertEquals(0, eh.doHiveCommand("select count(1) from blax"));
-  }
+        assertEquals(SUCCESS, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
+        assertEquals(SUCCESS, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax").getResponseStatus());
+        assertEquals(SUCCESS, eh.doHiveCommand("create table blbx (id int)").getResponseStatus());
+        assertEquals(FAILURE, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
+        assertEquals(SUCCESS, eh.doHiveCommand("select count(1) from blax").getResponseStatus());
+    }
 }
