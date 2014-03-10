@@ -8,7 +8,7 @@ A simple way to test Hive using Maven.
 hive_test gives us an embedded Hive including an embedded Derby database,
 and a local HiveThriftService. This allows us to create unit tests very easily.
 
-Hive scripts testing can be done in a similar way to PigUnit:
+Hive scripts testing can be done in a similar way to [PigUnit](http://pig.apache.org/docs/r0.8.1/pigunit.html):
 
         Map<String, String> params = Maps.newHashMap();
         File file = new File("src/test/resources/files/squidlog-SMALL.txt");
