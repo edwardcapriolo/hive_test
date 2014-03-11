@@ -21,6 +21,10 @@ public class HiveTest {
     private Properties hiveClientProperties;
     private Map<String, String> params;
 
+    public HiveTest(String scriptFile, Map<String, String> params) {
+        this(new Properties(), scriptFile, params);
+    }
+
     public HiveTest(Properties hiveClientProperties, String scriptFile, Map<String, String> params) {
         this.hiveClientProperties = hiveClientProperties;
         this.scriptFile = scriptFile;

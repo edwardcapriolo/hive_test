@@ -39,12 +39,11 @@ public class EmbeddedHive {
     private HiveConf c;
 
     public EmbeddedHive(Properties properties) {
-        Assert.isNotNull(properties.get(PropertyNames.HIVE_JAR.toString()), "hive.jar property must be set!");
-
         HiveConf conf = new HiveConf();
-        conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
-        //this line is required so that the embedded derby works well
-        //TODO load this filename from some property.
+        if(properties.get(PropertyNames.HIVE_JAR.toString())!=null){
+            //this line may be required so that the embedded derby works well
+            conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
+        }
 
         ss = new SessionState(new HiveConf(conf, EmbeddedHive.class));
         SessionState.start(ss);
@@ -52,7 +51,6 @@ public class EmbeddedHive {
     }
 
     public Response doHiveCommand(String cmd) {
-        //TODO Ensure the exec jar exists, download otherwise or fail if fails to do so.
         ArrayList<String> results = new ArrayList<String>();
         CommandProcessorResponse processorResponse = null;
         String cmd_trimmed = cmd.trim();
