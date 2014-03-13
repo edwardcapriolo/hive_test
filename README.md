@@ -69,10 +69,6 @@ There are still test classes extending from JUnit that can also be used for this
 -----
 
 ## Add Maven dependency
-After a mvn clean install, execute:
-
-            mvn install:install-file -Dfile=./target/hive_test-4.3.0-SNAPSHOT-jar-with-dependencies.jar \
-                    -DgroupId=com.jointhegrid -DartifactId=hive_test -Dversion=4.3.0-SNAPSHOT -Dpackaging=jar
 
 Declare the Maven dependency in your pom.xml file
 
@@ -87,7 +83,6 @@ Declare the Maven dependency in your pom.xml file
              ...
         <dependencies>
 
-Start writting hive tests!
 
 # Development
 
