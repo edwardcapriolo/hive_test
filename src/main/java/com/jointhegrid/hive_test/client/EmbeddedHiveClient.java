@@ -20,4 +20,9 @@ public class EmbeddedHiveClient implements HiveClient {
         log.info("Will execute command " + command);
         return hive.doHiveCommand(command);
     }
+
+    @Override
+    public void close() {
+        hive.close();
+    }
 }

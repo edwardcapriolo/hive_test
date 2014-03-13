@@ -15,18 +15,19 @@ import java.util.Map;
 
 /**
  * Provides means to execute scripts against a HiveClient
- * and retrieve responses
+ * and retrieve responses. May be used generically,
+ * not just for testing purposes.
  */
 public class Hive {
     private HiveClient hive;
     private String scriptFile;
     private Map<String, String> params;
 
-    public Hive(HiveClient hive, String scriptFile) {
+    protected Hive(HiveClient hive, String scriptFile) {
         this(hive, scriptFile, Maps.<String, String>newHashMap());
     }
 
-    public Hive(HiveClient hive, String scriptFile, Map<String, String> params) {
+    protected Hive(HiveClient hive, String scriptFile, Map<String, String> params) {
         this.hive = hive;
         this.scriptFile = scriptFile;
         this.params = params;

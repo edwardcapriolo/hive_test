@@ -40,6 +40,7 @@ public class EmbeddedHive {
 
     private SessionState ss;
     private HiveConf c;
+    private File warehouseDir;
 
     public EmbeddedHive(Properties properties) {
         HiveConf conf = new HiveConf();
@@ -51,9 +52,9 @@ public class EmbeddedHive {
         //this property is required so that every test runs on a different warehouse location.
         // This way we avoid conflicting scripts or dirty reexecutions
         File tmpDir = new File(System.getProperty(JAVA_IO_TMPDIR));
-        File wareshouseDir = new File(tmpDir, UUID.randomUUID().toString());
-        wareshouseDir.mkdir();
-        conf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, wareshouseDir.getAbsolutePath());
+        warehouseDir = new File(tmpDir, UUID.randomUUID().toString());
+        warehouseDir.mkdir();
+        conf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, warehouseDir.getAbsolutePath());
 
         ss = new SessionState(new HiveConf(conf, EmbeddedHive.class));
         SessionState.start(ss);
@@ -94,5 +95,18 @@ public class EmbeddedHive {
             logger.log(Level.SEVERE, null, e);
         }
         return new Response((processorResponse != null) ? processorResponse.getResponseCode() : -40, results);
+    }
+
+    public void close(){
+        try {
+            if(ss!=null){
+                ss.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(warehouseDir != null){
+            warehouseDir.delete();
+        }
     }
 }

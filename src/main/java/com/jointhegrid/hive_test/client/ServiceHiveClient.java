@@ -23,4 +23,9 @@ public class ServiceHiveClient implements HiveClient {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public void close() {
+        hive.transport.close();
+    }
 }

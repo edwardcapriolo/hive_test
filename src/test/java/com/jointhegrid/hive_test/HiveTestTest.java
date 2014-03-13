@@ -3,6 +3,7 @@ package com.jointhegrid.hive_test;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jointhegrid.hive_test.common.Response;
+import com.jointhegrid.hive_test.dsl.HiveBuilder;
 import com.jointhegrid.hive_test.dsl.HiveTest;
 import com.jointhegrid.hive_test.util.TestingUtil;
 import org.junit.Before;
@@ -39,15 +40,15 @@ public class HiveTestTest {
      */
     @Test
     public void testScriptFileInput() {
-        Map<String, String> params = Maps.newHashMap();
+        Map<String, File> inputFiles = Maps.newHashMap();
         File file = new File("src/test/resources/files/squidlog-SMALL.txt");
-
-        params.put("$INPUT1", file.getAbsolutePath());
+        inputFiles.put("$INPUT1", file);
 
         Response output =
-                new HiveTest(TestingUtil.getDefaultProperties(),
-                        "src/test/resources/scripts/squid-logs.hql", params)
-                        .outputForInput(Maps.<String, List<String>>newHashMap());
+                HiveBuilder.create()
+                        .withClientProperties(TestingUtil.getDefaultProperties())
+                        .hiveTestWithEmbeddedHive("src/test/resources/scripts/squid-logs.hql")
+                        .outputForInputFiles(inputFiles);
 
         List<String> expected = Lists.newArrayList();
         expected.add("http://www.maps.google.com/8314c8d5-7df9-4abe-8acb-9366b7c887c2\tGET\t1.374100685556E9");
@@ -57,10 +58,6 @@ public class HiveTestTest {
 
     @Test
     public void testScriptListInput() {
-        Map<String, String> params = Maps.newHashMap();
-        File file = new File("src/test/resources/files/squidlog-SMALL.txt");
-
-        params.put("$INPUT1", file.getAbsolutePath());
         Map<String, List<String>> input = Maps.<String, List<String>>newHashMap();
         List<String> lines = Lists.newArrayList();
         lines.add("1374100685.556 4 192.168.5.178 TCP_CLIENT_REFRESH_MISS/200 559 GET http://www.maps.google.com/8314c8d5-7df9-4abe-8acb-9366b7c887c2 mrodriguez DIRECT/192.168.5.117 text/html");
@@ -74,8 +71,9 @@ public class HiveTestTest {
         input.put("$INPUT1", lines);
 
         Response output =
-                new HiveTest(TestingUtil.getDefaultProperties(),
-                        "src/test/resources/scripts/squid-logs.hql", params)
+                HiveBuilder.create()
+                        .withClientProperties(TestingUtil.getDefaultProperties())
+                        .hiveTestWithEmbeddedHive("src/test/resources/scripts/squid-logs.hql")
                         .outputForInput(input);
 
         List<String> expected = Lists.newArrayList();

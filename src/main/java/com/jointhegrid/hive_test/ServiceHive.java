@@ -34,10 +34,14 @@ public class ServiceHive {
         client = new HiveServer.HiveServerHandler();
     }
 
-    public ServiceHive(String host, int port) throws TTransportException {
+    public ServiceHive(String host, int port) {
         transport = new TSocket(host, port);
         TProtocol protocol = new TBinaryProtocol(transport);
         client = new HiveClient(protocol);
-        transport.open();
+        try {
+            transport.open();
+        } catch (TTransportException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

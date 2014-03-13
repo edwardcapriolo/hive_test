@@ -15,4 +15,9 @@ public interface HiveClient {
      * @return - Response
      */
     Response execute(String command);
+
+    /**
+     * Closes connection to Hive and performs any required cleanup
+     */
+    public void close();
 }

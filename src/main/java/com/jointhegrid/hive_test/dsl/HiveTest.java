@@ -1,7 +1,10 @@
 package com.jointhegrid.hive_test.dsl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.jointhegrid.hive_test.EmbeddedHive;
 import com.jointhegrid.hive_test.client.EmbeddedHiveClient;
+import com.jointhegrid.hive_test.client.HiveClient;
 import com.jointhegrid.hive_test.common.Response;
 
 import java.io.File;
@@ -13,20 +16,23 @@ import java.util.Properties;
 import java.util.UUID;
 
 /**
- * Provides a utility to make Hive scripts testing easier
+ * Provides methods for easier Hive scripts testing
  */
 public class HiveTest {
     private Hive hive;
     private String scriptFile;
-    private Properties hiveClientProperties;
     private Map<String, String> params;
+    private HiveClient hiveClient;
 
-    public HiveTest(String scriptFile, Map<String, String> params) {
-        this(new Properties(), scriptFile, params);
+    protected HiveTest(HiveClient hiveClient, String scriptFile) {
+        this(hiveClient, scriptFile, null);
     }
 
-    public HiveTest(Properties hiveClientProperties, String scriptFile, Map<String, String> params) {
-        this.hiveClientProperties = hiveClientProperties;
+    protected HiveTest(HiveClient hiveClient, String scriptFile, Map<String, String> params) {
+        if(params == null){
+            params = Maps.newHashMap();
+        }
+        this.hiveClient = hiveClient;
         this.scriptFile = scriptFile;
         this.params = params;
     }
@@ -39,6 +45,8 @@ public class HiveTest {
      * @return Response;
      */
     public Response outputForInput(Map<String, List<String>> input) {
+        List<File> inputs = Lists.newArrayList();
+        Map<String, File> inputFiles = Maps.newHashMap();
         for (String inputKey : input.keySet()) {
             try {
                 File file = File.createTempFile(UUID.randomUUID().toString(), ".tmp");
@@ -46,12 +54,36 @@ public class HiveTest {
                 for (String line : input.get(inputKey)) {
                     writer.println(line);
                 }
-                params.put(inputKey, file.getAbsolutePath());
+                writer.flush();
+                inputs.add(file);
+                inputFiles.put(inputKey, file);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        this.hive = new Hive(new EmbeddedHiveClient(new EmbeddedHive(hiveClientProperties)), scriptFile, params);
+
+        Response response = outputForInputFiles(inputFiles);
+        //cleanup aux files to avoid filling too much space
+        for(File file : inputs){
+            file.delete();
+        }
+        return response;
+    }
+
+    /**
+     * Enables the user to get the output for a specific input in
+     * order to be able to perform assertions.
+     *
+     * @param input - Map<String, File> input
+     * @return Response;
+     */
+    public Response outputForInputFiles(Map<String, File> input) {
+        Map<String, String> params = Maps.<String, String>newHashMap();
+        params.putAll(this.params);
+        for (String inputKey : input.keySet()) {
+            params.put(inputKey, input.get(inputKey).getAbsolutePath());
+        }
+        this.hive = new Hive(hiveClient, scriptFile, params);
 
         return hive.execute();
     }
