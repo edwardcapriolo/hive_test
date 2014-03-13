@@ -1,10 +1,10 @@
 hive_test
 =============
-A simple way to test Hive using Maven.
+A simple way to test Hive scripts using Maven.
 
 # Usage
 -----
-## How to write a test using hive_test
+### How to write a test using hive_test
 
 hive_test gives us an embedded Hive including an embedded Derby database,
 and a local HiveThriftService. This allows us to create unit tests very easily.
@@ -68,7 +68,7 @@ There are still test classes extending from JUnit that can also be used for this
 
 -----
 
-## Add Maven dependency
+### Add Maven dependency
 
 Declare the Maven dependency in your pom.xml file
 
