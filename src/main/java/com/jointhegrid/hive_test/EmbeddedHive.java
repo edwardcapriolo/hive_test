@@ -81,7 +81,13 @@ public class EmbeddedHive {
             }
         }
         try {
-            ((Driver) proc).getResults(results);
+            if(proc instanceof org.apache.hadoop.hive.ql.Driver){
+                ((Driver) proc).getResults(results);
+            } else {
+                logger.info(String.format(
+                        "Processor of class %s is currently not supported for retrieving results", proc.getClass()
+                ));
+            }
         } catch (IOException e) {
             logger.log(Level.SEVERE, null, e);
         } catch (CommandNeedRetryException e) {

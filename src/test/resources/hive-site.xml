@@ -16,4 +16,15 @@
   <description>JDBC connect string for a JDBC metastore</description>
 </property>
 
+<!--
+    This property is no longer required for executing
+    an embedded Hive instance if the EmbeddedHive class
+    is used. We recommend using EmbeddedHive.
+-->
+<property>
+  <name>hive.metastore.warehouse.dir</name>
+  <value>/tmp/warehouse</value>
+  <description>location of default database for the warehouse</description>
+</property>
+
 </configuration>
