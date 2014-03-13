@@ -2,8 +2,9 @@ hive_test
 =============
 A simple way to test Hive using Maven.
 
-## Usage
+# Usage
 -----
+## How to write a test using hive_test
 
 hive_test gives us an embedded Hive including an embedded Derby database,
 and a local HiveThriftService. This allows us to create unit tests very easily.
@@ -67,7 +68,34 @@ There are still test classes extending from JUnit that can also be used for this
 
 -----
 
-## Using hive_test
+## Add Maven dependency
+After a mvn clean install, execute:
+
+            mvn install:install-file -Dfile=./target/hive_test-4.3.0-SNAPSHOT-jar-with-dependencies.jar \
+                    -DgroupId=com.jointhegrid -DartifactId=hive_test -Dversion=4.3.0-SNAPSHOT -Dpackaging=jar
+
+Declare the Maven dependency in your pom.xml file
+
+        <dependencies>
+            ...
+                <dependency>
+                    <groupId>com.jointhegrid</groupId>
+                    <artifactId>hive_test</artifactId>
+                    <version>4.3.0-SNAPSHOT</version>
+                    <classifier>jar-with-dependencies</classifier>
+                </dependency>
+             ...
+        <dependencies>
+
+Start writting hive tests!
+
+# Development
+
+### Setting up the project
+
+When compiling the project, you may see an error regarding the jdo2-api:2.3-ec dependency.
+Check [this link](https://issues.apache.org/jira/browse/HIVE-4114) to fix it.
+
 ### Setup with Maven
 
 By default, we're set to download a local copy of Hadoop when you first build Hive Test, or whenever the project is cleaned, just before running our test cases.
@@ -97,7 +125,3 @@ We'll skip attempting to download and use a local copy of Hadoop if any of the f
 Hive Test will work so long as you have Hadoop 0.20.X or  1.2.1 in your path, i.e. /usr/bin/hadoop. In this case, you'll want to deactivate the hadoop download.
 
     mvn --activate-profiles -download-hadoop test
-
-## Development - setting up the project
-When compiling the project, you may see an error regarding the jdo2-api:2.3-ec dependency.
-Check [this link](https://issues.apache.org/jira/browse/HIVE-4114) to fix it.
