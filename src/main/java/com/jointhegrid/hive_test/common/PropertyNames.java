@@ -4,7 +4,7 @@ package com.jointhegrid.hive_test.common;
  * Configuration property names;
  */
 public enum PropertyNames {
-    HIVE_JAR("hive.jar");
+    HIVE_JAR("hive.jar"), METASTOREWAREHOUSE("hive.metastore.warehouse.dir");
 
     private String propertyName;
 

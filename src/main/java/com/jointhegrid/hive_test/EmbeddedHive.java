@@ -26,13 +26,16 @@ import org.apache.hadoop.hive.ql.processors.CommandProcessorResponse;
 import org.apache.hadoop.hive.ql.session.SessionState;
 import org.eclipse.jdt.internal.core.Assert;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EmbeddedHive {
+    private static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
     private static Logger logger = Logger.getLogger(EmbeddedHive.class.getName());
 
     private SessionState ss;
@@ -42,8 +45,15 @@ public class EmbeddedHive {
         HiveConf conf = new HiveConf();
         if(properties.get(PropertyNames.HIVE_JAR.toString())!=null){
             //this line may be required so that the embedded derby works well
+            //refers to dependencies from the hive-exec jar
             conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
         }
+        //this property is required so that every test runs on a different warehouse location.
+        // This way we avoid conflicting scripts or dirty reexecutions
+        File tmpDir = new File(System.getProperty(JAVA_IO_TMPDIR));
+        File wareshouseDir = new File(tmpDir, UUID.randomUUID().toString());
+        wareshouseDir.mkdir();
+        conf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, wareshouseDir.getAbsolutePath());
 
         ss = new SessionState(new HiveConf(conf, EmbeddedHive.class));
         SessionState.start(ss);
