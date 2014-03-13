@@ -45,7 +45,7 @@ public class EmbeddedHive {
         HiveConf conf = new HiveConf();
         if(properties.get(PropertyNames.HIVE_JAR.toString())!=null){
             //this line may be required so that the embedded derby works well
-            //refers to dependencies from the hive-exec jar
+            //refers to dependencies containing ExecDriver class
             conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
         }
         //this property is required so that every test runs on a different warehouse location.
