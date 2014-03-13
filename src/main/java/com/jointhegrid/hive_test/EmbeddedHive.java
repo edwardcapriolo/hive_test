@@ -42,6 +42,10 @@ public class EmbeddedHive {
     private HiveConf c;
     private File warehouseDir;
 
+    /**
+     * Create embedded Hive
+     * @param properties - Properties
+     */
     public EmbeddedHive(Properties properties) {
         HiveConf conf = new HiveConf();
         if(properties.get(PropertyNames.HIVE_JAR.toString())!=null){
@@ -61,6 +65,11 @@ public class EmbeddedHive {
         c = ss.getConf();
     }
 
+    /**
+     * Execute Hive command
+     * @param cmd - hive command
+     * @return Response
+     */
     public Response doHiveCommand(String cmd) {
         ArrayList<String> results = new ArrayList<String>();
         CommandProcessorResponse processorResponse = null;
@@ -97,6 +106,9 @@ public class EmbeddedHive {
         return new Response((processorResponse != null) ? processorResponse.getResponseCode() : -40, results);
     }
 
+    /**
+     * Close connection and cleanup directory used for warehousing
+     */
     public void close(){
         try {
             if(ss!=null){

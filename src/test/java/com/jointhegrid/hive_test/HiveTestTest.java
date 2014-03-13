@@ -56,6 +56,9 @@ public class HiveTestTest {
         assertEquals(expected, output.getResult());
     }
 
+    /**
+     * Test against en embedded hive using content specified as an input list
+     */
     @Test
     public void testScriptListInput() {
         Map<String, List<String>> input = Maps.<String, List<String>>newHashMap();

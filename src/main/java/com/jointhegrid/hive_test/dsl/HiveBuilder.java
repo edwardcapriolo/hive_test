@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Created by jose.rozanec on 3/13/14.
+ * Builder to create Hive and HiveTest instances
  */
 public class HiveBuilder {
     private Properties hiveClientProperties;
@@ -26,34 +26,64 @@ public class HiveBuilder {
         return new HiveBuilder();
     }
 
+    /**
+     * Allows to set script execution parameters
+     * @param params - Map<String, String>
+     * @return same HiveBuilder instance
+     */
     public HiveBuilder withParams(Map<String, String> params) {
         this.params = params;
         return this;
     }
 
+    /**
+     * Allows to set hive client properties
+     * @param clientProperties - Properties
+     * @return same HiveBuilder instance
+     */
     public HiveBuilder withClientProperties(Properties clientProperties) {
         this.hiveClientProperties = clientProperties;
         return this;
     }
 
+    /**
+     * Creates a HiveTest instance using an embedded hive
+     * @param scriptFile - String
+     * @return new HiveTest instance
+     */
     public HiveTest hiveTestWithEmbeddedHive(String scriptFile) {
         return new HiveTest(
                 createEmbeddedHiveClient(), scriptFile, params
         );
     }
 
+    /**
+     * Creates a HiveTest instance connecting to given client
+     * @param scriptFile - String
+     * @return new HiveTest instance
+     */
     public HiveTest hiveTestWithServiceHive(String scriptFile) {
         return new HiveTest(
                 createServiceHiveClient(), scriptFile, params
         );
     }
 
+    /**
+     * Creates a Hive instance using an embedded hive
+     * @param scriptFile - String
+     * @return new Hive instance
+     */
     public Hive hiveWithEmbeddedHive(String scriptFile) {
         return new Hive(
                 createEmbeddedHiveClient(), scriptFile, params
         );
     }
 
+    /**
+     * Creates a Hive instance connecting to given client
+     * @param scriptFile - String
+     * @return new Hive instance
+     */
     public Hive hiveWithServiceHive(String scriptFile) {
         return new Hive(
                 createServiceHiveClient(), scriptFile, params
