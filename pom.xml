@@ -218,11 +218,6 @@
     </pluginManagement>
   </build>
   <repositories>
-    <repository>
-      <id>riptano</id>
-      <url>http://mvn.riptano.com/content/repositories/snapshots</url>
-    </repository>
-
   </repositories>
   <profiles>
     <profile>
