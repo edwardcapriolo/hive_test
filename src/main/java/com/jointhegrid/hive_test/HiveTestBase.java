@@ -32,13 +32,6 @@ public abstract class HiveTestBase extends HadoopTestCase {
 
   public HiveTestBase() throws IOException {
     super(HadoopTestCase.LOCAL_MR, HadoopTestCase.LOCAL_FS, 1, 1);
-
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
     Map<String, String> env = new HashMap<String, String>();
     env.putAll(System.getenv());
     if (System.getenv("HADOOP_HOME") == null) {
@@ -46,12 +39,12 @@ public abstract class HiveTestBase extends HadoopTestCase {
       if (shome != null) {
         File home = new File(shome);
         File hadoopR = new File(home, "hadoop");
-        File hadoopHome = new File(hadoopR, "hadoop-0.20.2_local");
+        File hadoopHome = new File(hadoopR, "hadoop-1.2.1_local");
         if (hadoopHome.exists()) {
           env.put("HADOOP_HOME", hadoopHome.getAbsolutePath());
           EnvironmentHack.setEnv(env);
         }
-	File target = new File("target/hadoop-0.20.2");
+	File target = new File("target/hadoop-1.2.1");
         if ( target.exists() ){
           env.put("HADOOP_HOME", target.getAbsolutePath());
           EnvironmentHack.setEnv(env);
@@ -71,7 +64,7 @@ public abstract class HiveTestBase extends HadoopTestCase {
   public void setUp() throws Exception {
     super.setUp();
 
-    String jarFile = org.apache.hadoop.hive.ql.exec.MapRedTask.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+    String jarFile = org.apache.hadoop.hive.ql.exec.CopyTask.class.getProtectionDomain().getCodeSource().getLocation().getFile();
     System.setProperty(HiveConf.ConfVars.HIVEJAR.toString(), jarFile);
 
     Path rootDir = getDir(ROOT_DIR);

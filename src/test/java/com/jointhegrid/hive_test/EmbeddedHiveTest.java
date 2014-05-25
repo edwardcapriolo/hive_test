@@ -18,6 +18,7 @@ package com.jointhegrid.hive_test;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.sql.SQLException;
 
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
@@ -29,7 +30,7 @@ public class EmbeddedHiveTest extends HiveTestBase {
     super();
   }
 
-  public void testUseEmbedded() throws IOException {
+  public void testUseEmbedded() throws IOException, SQLException {
     EmbeddedHive eh = new EmbeddedHive();
     Path p = new Path(this.ROOT_DIR, "bfile");
 
@@ -42,7 +43,7 @@ public class EmbeddedHiveTest extends HiveTestBase {
     Assert.assertEquals(0, eh.doHiveCommand("create table blax (id int)"));
     Assert.assertEquals(0, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax"));
     Assert.assertEquals(0, eh.doHiveCommand("create table blbx (id int)"));
-    Assert.assertEquals(9, eh.doHiveCommand("create table blax (id int)"));
+    Assert.assertEquals(1, eh.doHiveCommand("create table blax (id int)"));
     Assert.assertEquals(0, eh.doHiveCommand("select count(1) from blax"));
   }
 }
