@@ -4,7 +4,7 @@
 	<groupId>io.teknek</groupId>
 	<artifactId>hiveunit</artifactId>
 	<name>hive-unit</name>
-	<version>0.0.0</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<description>Unit testing for hive</description>
 	<packaging>jar</packaging>
 
