@@ -13,7 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.jointhegrid.hive_test;
+package io.teknek.hiveunit;
+
+import io.teknek.hiveunit.HiveTestService;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -21,20 +23,16 @@ import java.io.OutputStreamWriter;
 
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.mapred.JobConf;
 import org.junit.Assert;
 
-public class EmbeddedHiveExampleTest extends HiveTestEmbedded {
 
-  public EmbeddedHiveExampleTest() throws IOException {
+public class ServiceExampleTest extends HiveTestService {
+
+  public ServiceExampleTest() throws IOException {
     super();
   }
 
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
-  public void testA() throws Exception {
+  public void testExecute() throws Exception {
     Path p = new Path(this.ROOT_DIR, "afile");
 
     FSDataOutputStream o = this.getFileSystem().create(p);
@@ -43,11 +41,11 @@ public class EmbeddedHiveExampleTest extends HiveTestEmbedded {
     bw.write("2\n");
     bw.close();
 
-    JobConf c = createJobConf();
-    Assert.assertEquals(0, doHiveCommand("create table bla (id int)", c));
-    Assert.assertEquals(0, doHiveCommand("load data local inpath '" + p.toString() + "' into table bla", c));
-    Assert.assertEquals(0, doHiveCommand("create table blb (id int)", c));
-    Assert.assertEquals(1, doHiveCommand("create table bla (id int)", c));
-    Assert.assertEquals(0, doHiveCommand("select count(1) from bla", c));
+    client.execute("create table  atest  (num int)");
+    client.execute("load data local inpath '" + p.toString() + "' into table atest");
+    client.execute("select count(1) as cnt from atest");
+    String row = client.fetchOne();
+    assertEquals(row, "2");
+    client.execute("drop table atest");
   }
 }

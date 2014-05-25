@@ -13,36 +13,41 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package com.jointhegrid.hive_test;
+package io.teknek.hiveunit;
+
+import io.teknek.hiveunit.EmbeddedHive;
+import io.teknek.hiveunit.HiveTestBase;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.sql.SQLException;
 
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
+import org.junit.Assert;
 
-public class ServiceHiveTest extends HiveTestService {
 
-  public ServiceHiveTest() throws IOException {
+public class EmbeddedHiveTest extends HiveTestBase {
+
+  public EmbeddedHiveTest() throws IOException {
     super();
   }
 
-  public void testExecute() throws Exception {
-    Path p = new Path(this.ROOT_DIR, "afile");
+  public void testUseEmbedded() throws IOException, SQLException {
+    EmbeddedHive eh = new EmbeddedHive();
+    Path p = new Path(this.ROOT_DIR, "bfile");
 
     FSDataOutputStream o = this.getFileSystem().create(p);
     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(o));
     bw.write("1\n");
     bw.write("2\n");
     bw.close();
-    ServiceHive sh = new ServiceHive();
 
-    sh.client.execute("create table  atest  (num int)");
-    sh.client.execute("load data local inpath '" + p.toString() + "' into table atest");
-    sh.client.execute("select count(1) as cnt from atest");
-    String row = sh.client.fetchOne();
-    assertEquals("2", row);
-    sh.client.execute("drop table atest");
+    Assert.assertEquals(0, eh.doHiveCommand("create table blax (id int)"));
+    Assert.assertEquals(0, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax"));
+    Assert.assertEquals(0, eh.doHiveCommand("create table blbx (id int)"));
+    Assert.assertEquals(1, eh.doHiveCommand("create table blax (id int)"));
+    Assert.assertEquals(0, eh.doHiveCommand("select count(1) from blax"));
   }
 }
