@@ -1,0 +1,6 @@
+*~
+.*
+!.gitignore
+derby.log
+target/
+testing/
