@@ -16,6 +16,7 @@ limitations under the License.
 package com.jointhegrid.hive_test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ public abstract class HiveTestEmbedded extends HiveTestBase {
     c = (HiveConf) ss.getConf();
   }
 
-  public int doHiveCommand(String cmd, Configuration h2conf) {
+  public int doHiveCommand(String cmd, Configuration h2conf) throws SQLException {
     int ret = 40;
     String cmd_trimmed = cmd.trim();
     String[] tokens = cmd_trimmed.split("\\s+");
@@ -52,7 +53,7 @@ public abstract class HiveTestEmbedded extends HiveTestBase {
     CommandProcessor proc = null;
 
 
-    proc = CommandProcessorFactory.get(tokens[0], c);
+    proc = CommandProcessorFactory.get(tokens, c);
 
     if (proc instanceof Driver) {
       try {

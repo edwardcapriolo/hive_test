@@ -8,71 +8,76 @@
   <description></description>
   <packaging>jar</packaging>
 	
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hive.version>0.13.0</hive.version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.hive</groupId>
-      <artifactId>hive-anttasks</artifactId>
-      <version>0.9.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hive</groupId>
       <artifactId>hive-cli</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-common</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-contrib</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-exec</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-metastore</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-serde</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-service</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
 		
     <dependency>
       <groupId>org.apache.hive</groupId>
       <artifactId>hive-shims</artifactId>
-      <version>0.9.0</version>
+      <version>${hive.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.apache.hive</groupId>
-      <artifactId>hive-builtins</artifactId>
-      <version>0.9.0</version>
-    </dependency>
-
-
+<!--
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>
       <version>0.20.2</version>
       <scope>provided</scope>
     </dependency>
-        
+    --> 
+<!--
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-main</artifactId>
+    <version>2.4.0</version>
+</dependency>
+-->
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-core</artifactId>
+    <version>1.2.1</version>
+</dependency>
+   
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -85,12 +90,20 @@
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
     </dependency>
+	<!--
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-test</artifactId>
       <version>0.20.2</version>
       <scope>provided</scope>
     </dependency>
+	-->
+
+	<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-test</artifactId>
+    <version>1.2.1</version>
+</dependency>
 
     <dependency>
       <groupId>log4j</groupId>
@@ -116,11 +129,13 @@
 
     </dependency>
 
+<!--
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr-runtime</artifactId>
       <version>3.0.1</version>
     </dependency>
+-->
 
     <dependency>
       <groupId>org.apache.thrift</groupId>
@@ -134,7 +149,7 @@
       <version>0.7.0</version>
     </dependency>
 
-
+   <!--
     <dependency>
       <groupId>javax.jdo</groupId>
       <artifactId>jdo2-api</artifactId>
@@ -170,6 +185,7 @@
       <artifactId>commons-dbcp</artifactId>
       <version>1.4</version>
     </dependency>
+    -->
 
     <dependency>
       <groupId>org.apache.derby</groupId>
@@ -218,11 +234,6 @@
     </pluginManagement>
   </build>
   <repositories>
-    <repository>
-      <id>riptano</id>
-      <url>http://mvn.riptano.com/content/repositories/snapshots</url>
-    </repository>
-
   </repositories>
   <profiles>
     <profile>
@@ -269,8 +280,8 @@
           <plugin>
             <configuration>
               <serverId>apache-main</serverId>
-              <url>http://archive.apache.org/dist/hadoop/common/hadoop-0.20.2</url>
-              <fromFile>hadoop-0.20.2.tar.gz</fromFile>
+              <url>http://archive.apache.org/dist/hadoop/common/hadoop-1.2.1</url>
+              <fromFile>hadoop-1.2.1.tar.gz</fromFile>
               <toDir>${project.build.directory}/hadoop</toDir>
             </configuration>
             <groupId>org.codehaus.mojo</groupId>
@@ -295,7 +306,7 @@
               <executable>tar</executable>
               <arguments>
                 <argument>-xf</argument>
-                <argument>${project.build.directory}/hadoop/hadoop-0.20.2.tar.gz</argument>
+                <argument>${project.build.directory}/hadoop/hadoop-1.2.1.tar.gz</argument>
                 <argument>-C</argument>
                 <argument>${project.build.directory}</argument>
               </arguments>

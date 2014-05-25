@@ -15,6 +15,7 @@ limitations under the License.
 */
 package com.jointhegrid.hive_test;
 
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.hadoop.hive.conf.HiveConf;
@@ -36,12 +37,13 @@ public class EmbeddedHive {
     c = (HiveConf) ss.getConf();
   }
 
-  public int doHiveCommand(String cmd) {
+  public int doHiveCommand(String cmd) throws SQLException {
     int ret = -40;
     String cmd_trimmed = cmd.trim();
     String[] tokens = cmd_trimmed.split("\\s+");
     String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
-    CommandProcessor proc = CommandProcessorFactory.get(tokens[0], c);
+    CommandProcessor proc = CommandProcessorFactory.get(tokens, c);
+    
     if (proc instanceof Driver) {
       try {
         ret = proc.run(cmd).getResponseCode();
