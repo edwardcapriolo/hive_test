@@ -6,7 +6,7 @@
 	<artifactId>hiveunit</artifactId>
 	<name>hive-unit</name>
 	<version>0.0.0-SNAPSHOT</version>
-	<description></description>
+	<description>Unit testing for hive</description>
 	<packaging>jar</packaging>
 
 	<parent>
