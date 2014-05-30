@@ -64,3 +64,11 @@ and a local HiveThriftService. This allows us to create unit tests very easily.
         client.execute("drop table atest");
       }
     }
+
+Builders
+======
+
+Nice for asserts! Sexy API, win!
+
+    assertEquals(new ResultSet()
+            .withRow(new Row().withColumn("2")).build(), client.fetchAll());

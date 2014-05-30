@@ -16,6 +16,8 @@ limitations under the License.
 package io.teknek.hiveunit;
 
 import io.teknek.hiveunit.HiveTestService;
+import io.teknek.hiveunit.builders.ResultSet;
+import io.teknek.hiveunit.builders.Row;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -40,12 +42,11 @@ public class ServiceExampleTest extends HiveTestService {
     bw.write("1\n");
     bw.write("2\n");
     bw.close();
-
     client.execute("create table  atest  (num int)");
     client.execute("load data local inpath '" + p.toString() + "' into table atest");
     client.execute("select count(1) as cnt from atest");
-    String row = client.fetchOne();
-    assertEquals(row, "2");
+    assertEquals( new ResultSet()
+            .withRow(new Row().withColumn("2")).build(), client.fetchAll());
     client.execute("drop table atest");
   }
 }
