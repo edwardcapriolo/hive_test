@@ -16,7 +16,7 @@ limitations under the License.
 package io.teknek.hiveunit;
 
 import io.teknek.hiveunit.HiveTestService;
-import io.teknek.hiveunit.builders.FileBuilder;
+import io.teknek.hiveunit.builders.File;
 import io.teknek.hiveunit.builders.ResultSet;
 import io.teknek.hiveunit.builders.Row;
 
@@ -32,7 +32,7 @@ public class ServiceExampleTest extends HiveTestService {
 
   public void testExecute() throws Exception {
     Path path = new Path(ROOT_DIR, "afile");
-    new FileBuilder(this.getFileSystem(), path)
+    new File(this.getFileSystem(), path)
       .withRow( new Row().withColumn("1"))
       .withRow( new Row().withColumn("2"))
       .build();

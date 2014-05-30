@@ -7,15 +7,15 @@ import java.io.OutputStreamWriter;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-public class FileBuilder {
+public class File {
 
   private BufferedWriter bw;
   
-  public FileBuilder(FileSystem fs, Path path) throws IOException{
+  public File(FileSystem fs, Path path) throws IOException{
     bw = new BufferedWriter(new OutputStreamWriter(fs.create(path)));
   }
   
-  public FileBuilder withRow (Row r) throws IOException{
+  public File withRow (Row r) throws IOException{
     bw.write(r.toString());
     bw.write("\n");
     return this;
