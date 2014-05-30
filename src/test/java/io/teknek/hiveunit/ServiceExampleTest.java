@@ -22,7 +22,7 @@ import io.teknek.hiveunit.builders.Row;
 
 import java.io.IOException;
 import org.apache.hadoop.fs.Path;
-
+import static io.teknek.hiveunit.builders.File.*;
 
 public class ServiceExampleTest extends HiveTestService {
 
@@ -32,7 +32,7 @@ public class ServiceExampleTest extends HiveTestService {
 
   public void testExecute() throws Exception {
     Path path = new Path(ROOT_DIR, "afile");
-    new File(this.getFileSystem(), path)
+    File(getFileSystem(), path)
       .withRow( new Row().withColumn("1"))
       .withRow( new Row().withColumn("2"))
       .build();

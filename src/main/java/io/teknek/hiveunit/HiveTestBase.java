@@ -25,31 +25,37 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.mapred.HadoopTestCase;
+import org.apache.log4j.Logger;
 
 public abstract class HiveTestBase extends HadoopTestCase {
 
+  protected final static Logger LOGGER = Logger.getLogger(HiveTestBase.class.getName());
   protected static final Path ROOT_DIR = new Path("testing");
 
   public HiveTestBase() throws IOException {
     super(HadoopTestCase.LOCAL_MR, HadoopTestCase.LOCAL_FS, 1, 1);
     Map<String, String> env = new HashMap<String, String>();
     env.putAll(System.getenv());
+    
     if (System.getenv("HADOOP_HOME") == null) {
       String shome = System.getProperty("user.home");
       if (shome != null) {
-        File home = new File(shome);
-        File hadoopR = new File(home, "hadoop");
-        File hadoopHome = new File(hadoopR, "hadoop-1.2.1_local");
+        File hadoopHome = new File(new File(shome, "hadoop"), "hadoop-1.2.1_local");
         if (hadoopHome.exists()) {
           env.put("HADOOP_HOME", hadoopHome.getAbsolutePath());
           EnvironmentHack.setEnv(env);
+          LOGGER.info(String.format("HADOOP_HOME was set by hiveunit to %1$s.", System.getenv("HADOOP_HOME")));
         }
-	File target = new File("target/hadoop-1.2.1");
+        File target = new File("target/hadoop-1.2.1");
         if ( target.exists() ){
           env.put("HADOOP_HOME", target.getAbsolutePath());
           EnvironmentHack.setEnv(env);
+          LOGGER.info(String.format("HADOOP_HOME was set by hiveunit to %1$s.", System.getenv("HADOOP_HOME")));
         }
+      } else {
+        LOGGER.info(String.format("HADOOP_HOME was found in environment as %1$s. Using that for hiveunit.", System.getenv("HADOOP_HOME")));
       }
+      //detect variable or hadoop in path and throw exception here?
     }
   }
 
