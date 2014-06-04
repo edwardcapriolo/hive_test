@@ -33,9 +33,10 @@ public class ServiceExampleTest extends HiveTestService {
   public void testExecute() throws Exception {
     Path path = new Path(ROOT_DIR, "afile");
     File(getFileSystem(), path)
-      .withRow( new Row().withColumn("1"))
-      .withRow( new Row().withColumn("2"))
+      .withRow(new Row().withColumn("1"))
+      .withRow(new Row().withColumn("2"))
       .build();
+    addJarFileToLib(com.google.common.io.Files.class);
     client.execute("create table  atest  (num int)");
     client.execute("load data local inpath '" + path.toString() + "' into table atest");
     client.execute("select count(1) as cnt from atest");
