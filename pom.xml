@@ -74,11 +74,55 @@
 			<artifactId>hive-shims</artifactId>
 			<version>${hive.version}</version>
 		</dependency>
+
 		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-core</artifactId>
-			<version>1.2.1</version>
-		</dependency>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-hdfs</artifactId>
+                        <version>2.3.0</version>
+                </dependency>
+
+		<dependency>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-hdfs</artifactId>
+                        <version>2.3.0</version>
+			<classifier>tests</classifier>
+                </dependency>
+
+
+		<dependency>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-common</artifactId>
+                        <version>2.3.0</version>
+                </dependency>
+
+		<dependency>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-common</artifactId>
+                        <version>2.3.0</version>
+			<classifier>tests</classifier>
+                </dependency>
+
+		<dependency>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-mapreduce-client-core</artifactId>
+                        <version>2.3.0</version>
+                        <scope>provided</scope>
+                </dependency>
+
+		 <dependency>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-mapreduce-client-common</artifactId>
+                        <version>2.3.0</version>
+                        <scope>test</scope>
+                </dependency>
+
+		<dependency>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-mapreduce-client-common</artifactId>
+                        <version>2.3.0</version>
+                        <scope>test</scope>
+                </dependency>
+
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
@@ -88,12 +132,21 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>4.11</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-test</artifactId>
 			<version>1.2.1</version>
+		</dependency>
+		-->
+		<!-- http://www.lopakalogic.com/articles/hadoop-articles/hadoop-testing-with-minicluster/ 
+                is this right answer? Where is hadoop-test proper -->
+		<dependency>
+  			<groupId>org.apache.hadoop</groupId>
+  			<artifactId>hadoop-test</artifactId>
+  			<version>2.3.0-mr1-cdh5.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -185,6 +238,10 @@
 		</pluginManagement>
 	</build>
 	<repositories>
+		  <repository>
+    		<id>cloudera-repo-releases</id>
+    <url>https://repository.cloudera.com/artifactory/repo/</url>
+  </repository>
 	</repositories>
 	<developers>
 		<developer>
