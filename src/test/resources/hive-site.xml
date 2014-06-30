@@ -1,17 +1,10 @@
 
 <configuration>
-
 <property>
   <name>hive.exec.mode.local.auto</name>
   <value>true</value>
+  <description> Let hive determine whether to run in local mode automatically </description>
 </property>
-
-<property>
-  <name>hive.mapred.local.mem</name>
-  <value>true</value>
-</property>
-
-
 <property>
   <name>javax.jdo.option.ConnectionURL</name>
   <!--<value>jdbc:derby:;databaseName=/tmp/metastore_db;create=true</value>-->
@@ -24,21 +17,5 @@
   <value>/tmp/warehouse</value>
   <description>location of default database for the warehouse</description>
 </property>
-
-<!--
-<property>
-  <name>hive.jar.path</name>
-  <value>/home/edward/.m2/repository/org/apache/hive/hive-exec/0.7.1-SNAPSHOT/hive-exec-0.7.1-SNAPSHOT.jar</value>
-  <description>location of default database for the warehouse</description>
-</property>
--->
-
-<!--
-<property>
-  <name>hive.metastore.local</name>
-  <value>true</value>
-  <description>controls whether to connect to remove metastore server or open a new metastore server in Hive Client JVM</description>
-</property>
--->
 
 </configuration>
