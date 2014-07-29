@@ -17,10 +17,6 @@ package io.teknek.hiveunit;
 
 import io.teknek.hiveunit.common.PropertyNames;
 import io.teknek.hiveunit.common.Response;
-
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.ql.CommandNeedRetryException;
 import org.apache.hadoop.hive.ql.Driver;
@@ -31,9 +27,12 @@ import org.apache.hadoop.hive.ql.session.SessionState;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class EmbeddedHive {
     private static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
@@ -45,11 +44,12 @@ public class EmbeddedHive {
 
     /**
      * Create embedded Hive
+     *
      * @param properties - Properties
      */
     public EmbeddedHive(Properties properties) {
         HiveConf conf = new HiveConf();
-        if(properties.get(PropertyNames.HIVE_JAR.toString())!=null){
+        if (properties.get(PropertyNames.HIVE_JAR.toString()) != null) {
             //this line may be required so that the embedded derby works well
             //refers to dependencies containing ExecDriver class
             conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
@@ -68,6 +68,7 @@ public class EmbeddedHive {
 
     /**
      * Execute Hive command
+     *
      * @param cmd - hive command
      * @return Response
      */
@@ -97,7 +98,7 @@ public class EmbeddedHive {
             }
         }
         try {
-            if(proc instanceof org.apache.hadoop.hive.ql.Driver){
+            if (proc instanceof org.apache.hadoop.hive.ql.Driver) {
                 ((Driver) proc).getResults(results);
             } else {
                 logger.info(String.format(
@@ -115,15 +116,15 @@ public class EmbeddedHive {
     /**
      * Close connection and cleanup directory used for warehousing
      */
-    public void close(){
+    public void close() {
         try {
-            if(ss!=null){
+            if (ss != null) {
                 ss.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(warehouseDir != null){
+        if (warehouseDir != null) {
             warehouseDir.delete();
         }
     }

@@ -28,6 +28,7 @@ public class HiveBuilder {
 
     /**
      * Allows to set script execution parameters
+     *
      * @param params - Map<String, String>
      * @return same HiveBuilder instance
      */
@@ -38,6 +39,7 @@ public class HiveBuilder {
 
     /**
      * Allows to set hive client properties
+     *
      * @param clientProperties - Properties
      * @return same HiveBuilder instance
      */
@@ -48,6 +50,7 @@ public class HiveBuilder {
 
     /**
      * Creates a HiveTest instance using an embedded hive
+     *
      * @param scriptFile - String
      * @return new HiveTest instance
      */
@@ -59,6 +62,7 @@ public class HiveBuilder {
 
     /**
      * Creates a HiveTest instance connecting to given client
+     *
      * @param scriptFile - String
      * @return new HiveTest instance
      */
@@ -70,6 +74,7 @@ public class HiveBuilder {
 
     /**
      * Creates a Hive instance using an embedded hive
+     *
      * @param scriptFile - String
      * @return new Hive instance
      */
@@ -81,6 +86,7 @@ public class HiveBuilder {
 
     /**
      * Creates a Hive instance connecting to given client
+     *
      * @param scriptFile - String
      * @return new Hive instance
      */
@@ -90,14 +96,14 @@ public class HiveBuilder {
         );
     }
 
-    private HiveClient createEmbeddedHiveClient(){
-        if(hiveClientProperties == null){
+    private HiveClient createEmbeddedHiveClient() {
+        if (hiveClientProperties == null) {
             hiveClientProperties = new Properties();
         }
         return new EmbeddedHiveClient(new EmbeddedHive(hiveClientProperties));
     }
 
-    private HiveClient createServiceHiveClient(){
+    private HiveClient createServiceHiveClient() {
         String host = "localhost";
         if (hiveClientProperties.getProperty(PropertyNames.HOST.toString()) != null) {
             host = hiveClientProperties.getProperty(PropertyNames.HOST.toString());

@@ -26,7 +26,7 @@ public class HiveTest {
     }
 
     protected HiveTest(HiveClient hiveClient, String scriptFile, Map<String, String> params) {
-        if(params == null){
+        if (params == null) {
             params = Maps.newHashMap();
         }
         this.hiveClient = hiveClient;
@@ -61,7 +61,7 @@ public class HiveTest {
 
         Response response = outputForInputFiles(inputFiles);
         //cleanup aux files to avoid filling too much space
-        for(File file : inputs){
+        for (File file : inputs) {
             file.delete();
         }
         return response;

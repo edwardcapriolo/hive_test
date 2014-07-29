@@ -15,18 +15,12 @@ limitations under the License.
 */
 package io.teknek.hiveunit;
 
-import io.teknek.hiveunit.HiveTestService;
-import io.teknek.hiveunit.ServiceHive;
-
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.Path;
 
 public class ServiceHiveTest extends HiveTestService {
 

@@ -15,8 +15,6 @@ limitations under the License.
 */
 package io.teknek.hiveunit;
 
-import io.teknek.hiveunit.HiveTestEmbedded;
-
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapred.JobConf;
