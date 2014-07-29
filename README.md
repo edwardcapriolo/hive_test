@@ -120,3 +120,38 @@ We'll skip attempting to download and use a local copy of Hadoop if any of the f
 Hive Test will work so long as you have Hadoop 0.20.X or  1.2.1 in your path, i.e. /usr/bin/hadoop. In this case, you'll want to deactivate the hadoop download.
 
     mvn --activate-profiles -download-hadoop test
+
+Usage
+-----
+
+Hive_test gives us an embedded Hive including an embedded Derby database, 
+and a local HiveThriftService. This allows us to create unit tests very easily.
+
+
+    public class ServiceExampleTest extends HiveTestService {
+
+      public ServiceExampleTest() throws IOException {
+        super();
+      }
+
+      public void testExecute() throws Exception {
+        Path path = new Path(ROOT_DIR, "afile");
+        new FileBuilder(this.getFileSystem(), path)
+          .withRow( new Row().withColumn("1"))
+          .withRow( new Row().withColumn("2"))
+          .build();
+        client.execute("create table  atest  (num int)");
+        client.execute("load data local inpath '" + path.toString() + "' into table atest");
+        client.execute("select count(1) as cnt from atest");
+        assertEquals( new ResultSet()
+            .withRow(new Row().withColumn("2")).build(), client.fetchAll());
+        client.execute("drop table atest");
+      }
+    }
+
+Builders
+
+Nice for asserts! Sexy API, win!
+
+    assertEquals(new ResultSet()
+            .withRow(new Row().withColumn("2")).build(), client.fetchAll());

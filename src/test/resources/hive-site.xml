@@ -1,8 +1,8 @@
 <configuration>
-
 <property>
   <name>hive.exec.mode.local.auto</name>
   <value>true</value>
+  <description> Let hive determine whether to run in local mode automatically </description>
 </property>
 
 <property>
@@ -26,5 +26,4 @@
   <value>/tmp/warehouse</value>
   <description>location of default database for the warehouse</description>
 </property>
-
 </configuration>
