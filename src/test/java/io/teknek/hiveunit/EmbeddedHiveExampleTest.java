@@ -48,6 +48,7 @@ public class EmbeddedHiveExampleTest extends HiveTestEmbedded {
         Assert.assertEquals(0, doHiveCommand("load data local inpath '" + p.toString() + "' into table bla", c));
         Assert.assertEquals(0, doHiveCommand("create table blb (id int)", c));
         Assert.assertEquals(1, doHiveCommand("create table bla (id int)", c));
+        Assert.assertEquals(0, doHiveCommand("select * from bla", c));
         Assert.assertEquals(0, doHiveCommand("select count(1) from bla", c));
         Assert.assertEquals(0, doHiveCommand("select id from bla", c));
 

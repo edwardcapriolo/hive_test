@@ -7,7 +7,7 @@
 
     <property>
         <name>hive.mapred.local.mem</name>
-        <value>true</value>
+        <value>0</value>
     </property>
 
     <property>
