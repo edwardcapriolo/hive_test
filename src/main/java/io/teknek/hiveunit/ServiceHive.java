@@ -27,21 +27,21 @@ import org.apache.thrift.transport.TTransportException;
 
 public class ServiceHive {
 
-    public TTransport transport;
-    public HiveInterface client;
+  public TTransport transport;
+  public HiveInterface client;
 
-    public ServiceHive() throws MetaException {
-        client = new HiveServer.HiveServerHandler();
-    }
+  public ServiceHive() throws MetaException {
+    client = new HiveServer.HiveServerHandler();
+  }
 
-    public ServiceHive(String host, int port) {
-        transport = new TSocket(host, port);
-        TProtocol protocol = new TBinaryProtocol(transport);
-        client = new HiveClient(protocol);
-        try {
-            transport.open();
-        } catch (TTransportException e) {
-            throw new RuntimeException(e);
-        }
+  public ServiceHive(String host, int port) {
+    transport = new TSocket(host, port);
+    TProtocol protocol = new TBinaryProtocol(transport);
+    client = new HiveClient(protocol);
+    try {
+      transport.open();
+    } catch (TTransportException e) {
+      throw new RuntimeException(e);
     }
+  }
 }

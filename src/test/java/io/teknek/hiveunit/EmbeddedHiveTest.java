@@ -28,24 +28,24 @@ import static io.teknek.hiveunit.common.ResponseStatus.SUCCESS;
 
 public class EmbeddedHiveTest extends HiveTestBase {
 
-    public EmbeddedHiveTest() throws IOException {
-        super();
-    }
+  public EmbeddedHiveTest() throws IOException {
+    super();
+  }
 
-    public void testUseEmbedded() throws IOException {
-        EmbeddedHive eh = new EmbeddedHive(TestingUtil.getDefaultProperties());
-        Path p = new Path(this.ROOT_DIR, "bfile");
+  public void testUseEmbedded() throws IOException {
+    EmbeddedHive eh = new EmbeddedHive(TestingUtil.getDefaultProperties());
+    Path p = new Path(this.ROOT_DIR, "bfile");
 
-        FSDataOutputStream o = this.getFileSystem().create(p);
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(o));
-        bw.write("1\n");
-        bw.write("2\n");
-        bw.close();
+    FSDataOutputStream o = this.getFileSystem().create(p);
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(o));
+    bw.write("1\n");
+    bw.write("2\n");
+    bw.close();
 
-        assertEquals(SUCCESS, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
-        assertEquals(SUCCESS, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax").getResponseStatus());
-        assertEquals(SUCCESS, eh.doHiveCommand("create table blbx (id int)").getResponseStatus());
-        assertEquals(FAILURE, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
-        assertEquals(SUCCESS, eh.doHiveCommand("select count(1) from blax").getResponseStatus());
-    }
+    assertEquals(SUCCESS, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
+    assertEquals(SUCCESS, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax").getResponseStatus());
+    assertEquals(SUCCESS, eh.doHiveCommand("create table blbx (id int)").getResponseStatus());
+    assertEquals(FAILURE, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
+    assertEquals(SUCCESS, eh.doHiveCommand("select count(1) from blax").getResponseStatus());
+  }
 }

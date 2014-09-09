@@ -32,52 +32,52 @@ import java.util.logging.Logger;
 
 public abstract class HiveTestEmbedded extends HiveTestBase {
 
-    SessionState ss;
-    HiveConf c;
+  SessionState ss;
+  HiveConf c;
 
-    public HiveTestEmbedded() throws IOException {
-        super();
+  public HiveTestEmbedded() throws IOException {
+    super();
+  }
+
+  public void setUp() throws Exception {
+    super.setUp();
+    //SessionState.initHiveLog4j();
+    ss = new SessionState(new HiveConf(HiveTestEmbedded.class));
+    SessionState.start(ss);
+    c = (HiveConf) ss.getConf();
+  }
+
+  public int doHiveCommand(String cmd, Configuration h2conf) {
+    int ret = 40;
+    String cmd_trimmed = cmd.trim();
+    String[] tokens = cmd_trimmed.split("\\s+");
+    String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
+    CommandProcessor proc = null;
+
+    try {
+      proc = CommandProcessorFactory.get(tokens, c);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
 
-    public void setUp() throws Exception {
-        super.setUp();
-        //SessionState.initHiveLog4j();
-        ss = new SessionState(new HiveConf(HiveTestEmbedded.class));
-        SessionState.start(ss);
-        c = (HiveConf) ss.getConf();
+    ArrayList<String> out = Lists.newArrayList();
+
+    if (proc instanceof Driver) {
+      try {
+        ret = proc.run(cmd).getResponseCode();
+        ((Driver) proc).getResults(out);
+      } catch (CommandNeedRetryException ex) {
+        Logger.getLogger(HiveTestEmbedded.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    } else {
+      try {
+        ret = proc.run(cmd_1).getResponseCode();
+      } catch (CommandNeedRetryException ex) {
+        Logger.getLogger(HiveTestEmbedded.class.getName()).log(Level.SEVERE, null, ex);
+      }
     }
-
-    public int doHiveCommand(String cmd, Configuration h2conf) {
-        int ret = 40;
-        String cmd_trimmed = cmd.trim();
-        String[] tokens = cmd_trimmed.split("\\s+");
-        String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
-        CommandProcessor proc = null;
-
-        try {
-            proc = CommandProcessorFactory.get(tokens, c);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        ArrayList<String> out = Lists.newArrayList();
-
-        if (proc instanceof Driver) {
-            try {
-                ret = proc.run(cmd).getResponseCode();
-                ((Driver) proc).getResults(out);
-            } catch (CommandNeedRetryException ex) {
-                Logger.getLogger(HiveTestEmbedded.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                ret = proc.run(cmd_1).getResponseCode();
-            } catch (CommandNeedRetryException ex) {
-                Logger.getLogger(HiveTestEmbedded.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return ret;
-    }
+    return ret;
+  }
 }

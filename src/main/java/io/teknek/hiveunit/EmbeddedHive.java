@@ -35,97 +35,97 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class EmbeddedHive {
-    private static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
-    private static Logger logger = Logger.getLogger(EmbeddedHive.class.getName());
+  private static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
+  private static Logger logger = Logger.getLogger(EmbeddedHive.class.getName());
 
-    private SessionState ss;
-    private HiveConf c;
-    private File warehouseDir;
+  private SessionState ss;
+  private HiveConf c;
+  private File warehouseDir;
 
-    /**
-     * Create embedded Hive
-     *
-     * @param properties - Properties
-     */
-    public EmbeddedHive(Properties properties) {
-        HiveConf conf = new HiveConf();
-        if (properties.get(PropertyNames.HIVE_JAR.toString()) != null) {
-            //this line may be required so that the embedded derby works well
-            //refers to dependencies containing ExecDriver class
-            conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
-        }
-        //this property is required so that every test runs on a different warehouse location.
-        // This way we avoid conflicting scripts or dirty reexecutions
-        File tmpDir = new File(System.getProperty(JAVA_IO_TMPDIR));
-        warehouseDir = new File(tmpDir, UUID.randomUUID().toString());
-        warehouseDir.mkdir();
-        conf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, warehouseDir.getAbsolutePath());
-
-        ss = new SessionState(new HiveConf(conf, EmbeddedHive.class));
-        SessionState.start(ss);
-        c = ss.getConf();
+  /**
+   * Create embedded Hive
+   *
+   * @param properties - Properties
+   */
+  public EmbeddedHive(Properties properties) {
+    HiveConf conf = new HiveConf();
+    if (properties.get(PropertyNames.HIVE_JAR.toString()) != null) {
+      //this line may be required so that the embedded derby works well
+      //refers to dependencies containing ExecDriver class
+      conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
     }
+    //this property is required so that every test runs on a different warehouse location.
+    // This way we avoid conflicting scripts or dirty reexecutions
+    File tmpDir = new File(System.getProperty(JAVA_IO_TMPDIR));
+    warehouseDir = new File(tmpDir, UUID.randomUUID().toString());
+    warehouseDir.mkdir();
+    conf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, warehouseDir.getAbsolutePath());
 
-    /**
-     * Execute Hive command
-     *
-     * @param cmd - hive command
-     * @return Response
-     */
-    public Response doHiveCommand(String cmd) {
-        ArrayList<String> results = new ArrayList<String>();
-        CommandProcessorResponse processorResponse = null;
-        String cmd_trimmed = cmd.trim();
-        String[] tokens = cmd_trimmed.split("\\s+");
-        String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
-        CommandProcessor proc = null;
-        try {
-            proc = CommandProcessorFactory.get(tokens, c);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (proc instanceof Driver) {
-            try {
-                processorResponse = proc.run(cmd);
-            } catch (CommandNeedRetryException ex) {
-                logger.log(Level.SEVERE, null, ex);
-            }
-        } else {
-            try {
-                processorResponse = proc.run(cmd_1);
-            } catch (CommandNeedRetryException ex) {
-                logger.log(Level.SEVERE, null, ex);
-            }
-        }
-        try {
-            if (proc instanceof org.apache.hadoop.hive.ql.Driver) {
-                ((Driver) proc).getResults(results);
-            } else {
-                logger.info(String.format(
-                        "Processor of class %s is currently not supported for retrieving results", proc.getClass()
-                ));
-            }
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, null, e);
-        } catch (CommandNeedRetryException e) {
-            logger.log(Level.SEVERE, null, e);
-        }
-        return new Response((processorResponse != null) ? processorResponse.getResponseCode() : -40, results);
-    }
+    ss = new SessionState(new HiveConf(conf, EmbeddedHive.class));
+    SessionState.start(ss);
+    c = ss.getConf();
+  }
 
-    /**
-     * Close connection and cleanup directory used for warehousing
-     */
-    public void close() {
-        try {
-            if (ss != null) {
-                ss.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (warehouseDir != null) {
-            warehouseDir.delete();
-        }
+  /**
+   * Execute Hive command
+   *
+   * @param cmd - hive command
+   * @return Response
+   */
+  public Response doHiveCommand(String cmd) {
+    ArrayList<String> results = new ArrayList<String>();
+    CommandProcessorResponse processorResponse = null;
+    String cmd_trimmed = cmd.trim();
+    String[] tokens = cmd_trimmed.split("\\s+");
+    String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
+    CommandProcessor proc = null;
+    try {
+      proc = CommandProcessorFactory.get(tokens, c);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
+    if (proc instanceof Driver) {
+      try {
+        processorResponse = proc.run(cmd);
+      } catch (CommandNeedRetryException ex) {
+        logger.log(Level.SEVERE, null, ex);
+      }
+    } else {
+      try {
+        processorResponse = proc.run(cmd_1);
+      } catch (CommandNeedRetryException ex) {
+        logger.log(Level.SEVERE, null, ex);
+      }
+    }
+    try {
+      if (proc instanceof org.apache.hadoop.hive.ql.Driver) {
+        ((Driver) proc).getResults(results);
+      } else {
+        logger.info(String.format(
+          "Processor of class %s is currently not supported for retrieving results", proc.getClass()
+        ));
+      }
+    } catch (IOException e) {
+      logger.log(Level.SEVERE, null, e);
+    } catch (CommandNeedRetryException e) {
+      logger.log(Level.SEVERE, null, e);
+    }
+    return new Response((processorResponse != null) ? processorResponse.getResponseCode() : -40, results);
+  }
+
+  /**
+   * Close connection and cleanup directory used for warehousing
+   */
+  public void close() {
+    try {
+      if (ss != null) {
+        ss.close();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (warehouseDir != null) {
+      warehouseDir.delete();
+    }
+  }
 }

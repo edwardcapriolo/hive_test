@@ -8,16 +8,16 @@ import io.teknek.hiveunit.common.Response;
 
 public interface HiveClient {
 
-    /**
-     * Method for executing commands against Hive
-     *
-     * @param command - some command
-     * @return - Response
-     */
-    Response execute(String command);
+  /**
+   * Method for executing commands against Hive
+   *
+   * @param command - some command
+   * @return - Response
+   */
+  Response execute(String command);
 
-    /**
-     * Closes connection to Hive and performs any required cleanup
-     */
-    public void close();
+  /**
+   * Closes connection to Hive and performs any required cleanup
+   */
+  public void close();
 }
