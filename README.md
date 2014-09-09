@@ -1,9 +1,8 @@
 hive_test: A simple way to test Hive scripts.
-========
-
-# Usage
 
 ## Usage
+
+### Usage
 
 hive_test gives us an embedded Hive including an embedded Derby database,
 and a local HiveThriftService. This allows us to create unit tests very easily.
@@ -37,7 +36,7 @@ For more examples check [this class](https://github.com/jmrozanec/hive_test/blob
             }
 
 
-## Available at Maven central!
+### Available at Maven central!
 
 Declare the Maven dependency in your pom.xml file
 
@@ -53,7 +52,7 @@ Declare the Maven dependency in your pom.xml file
         <dependencies>
 
 
-## Contribute!
+### Contribute!
 
 Contributions are welcome! You can contribute by
  * starring this repo!
