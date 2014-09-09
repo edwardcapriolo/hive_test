@@ -55,7 +55,7 @@ Declare the Maven dependency in your pom.xml file
 Contributions are welcome! You can contribute by
  * starring this repo!
  * adding new features
- * enhancing existing code: ex.: provide more accurate description cases
+ * enhancing existing code
  * testing
  * enhancing documentation
  * bringing suggestions and reporting bugs
