@@ -36,7 +36,7 @@ For more examples check [this class](https://github.com/jmrozanec/hive_test/blob
             }
 
 
-### Maven!
+### Maven
 
 #### Available from Maven central
 
@@ -54,7 +54,7 @@ Declare the Maven dependency in your pom.xml file
         <dependencies>
 
 
-#### Profiles
+#### Execution profiles
 
 ##### Without a local Hadoop install
 
