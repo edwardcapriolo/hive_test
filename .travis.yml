@@ -3,4 +3,4 @@ language: java
 jdk:
   - openjdk6
 
-script: mvn --activate-profiles download-hadoop test
+script: "mvn --activate-profiles download-hadoop test"
