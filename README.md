@@ -36,7 +36,9 @@ For more examples check [this class](https://github.com/jmrozanec/hive_test/blob
             }
 
 
-### Available at Maven central!
+### Maven!
+
+#### Available from Maven central
 
 Declare the Maven dependency in your pom.xml file
 
@@ -50,6 +52,40 @@ Declare the Maven dependency in your pom.xml file
                 </dependency>
              ...
         <dependencies>
+
+
+#### Profiles
+
+##### Without a local Hadoop install
+
+By default, we're set to download a local copy of Hadoop when you first build Hive Test, or whenever the project is cleaned, just before running our test cases.
+
+You can force a redownload and installation of Hadoop by manually activating the download-hadoop profile
+
+    mvn --activate-profiles download-hadoop test
+
+You can also perform the download and extraction process independent of testing.
+
+Download Hadoop (into the maven target directory)
+
+    mvn --activate-profiles download-hadoop wagon:download-single
+
+Extract Hadoop  (into the maven target directory)
+
+    mvn --activate-profiles download-hadoop exec:exec
+
+
+##### With a local Hadoop install
+
+We'll skip attempting to download and use a local copy of Hadoop if any of the following are true
+
+* set your HADOOP_HOME environment variable to a hadoop distribution
+* hadoop tar extracted to  $home/hadoop/hadoop-0.20.2_local
+
+Hive Test will work so long as you have Hadoop in your path, i.e. /usr/bin/hadoop. In this case, you'll want to deactivate the hadoop download.
+
+    mvn --activate-profiles -hadoop-home-defined test
+
 
 
 ### Contribute!
