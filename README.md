@@ -1,5 +1,7 @@
 ## hive_test: A simple way to test Hive scripts.
 
+[![Build Status](https://travis-ci.org/jmrozanec/hive_test.svg?branch=master)](https://travis-ci.org/jmrozanec/hive_test)
+
 ### Usage
 
 hive_test gives us an embedded Hive including an embedded Derby database,
