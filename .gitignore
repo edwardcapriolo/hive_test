@@ -1,5 +1,7 @@
-*~
-.*
+*.log
+*.iml
+target
+.idea
 !.gitignore
 derby.log
 target/

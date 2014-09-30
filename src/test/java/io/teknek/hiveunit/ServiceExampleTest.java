@@ -15,14 +15,12 @@ limitations under the License.
 */
 package io.teknek.hiveunit;
 
-import io.teknek.hiveunit.HiveTestService;
-import io.teknek.hiveunit.builders.File;
-import io.teknek.hiveunit.builders.ResultSet;
-import io.teknek.hiveunit.builders.Row;
-
-import java.io.IOException;
+import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
-import static io.teknek.hiveunit.builders.File.*;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class ServiceExampleTest extends HiveTestService {
 
@@ -31,17 +29,19 @@ public class ServiceExampleTest extends HiveTestService {
   }
 
   public void testExecute() throws Exception {
-    Path path = new Path(ROOT_DIR, "afile");
-    File(getFileSystem(), path)
-      .withRow(new Row().withColumn("1"))
-      .withRow(new Row().withColumn("2"))
-      .build();
-    addJarFileToLib(com.google.common.io.Files.class);
+    Path p = new Path(this.ROOT_DIR, "afile");
+
+    FSDataOutputStream o = this.getFileSystem().create(p);
+    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(o));
+    bw.write("1\n");
+    bw.write("2\n");
+    bw.close();
+
     client.execute("create table  atest  (num int)");
-    client.execute("load data local inpath '" + path.toString() + "' into table atest");
+    client.execute("load data local inpath '" + p.toString() + "' into table atest");
     client.execute("select count(1) as cnt from atest");
-    assertEquals( new ResultSet()
-            .withRow(new Row().withColumn("2")).build(), client.fetchAll());
+    String row = client.fetchOne();
+    assertEquals(row, "2");
     client.execute("drop table atest");
   }
 }

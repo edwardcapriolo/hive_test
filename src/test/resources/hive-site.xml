@@ -1,21 +1,29 @@
-
 <configuration>
-<property>
-  <name>hive.exec.mode.local.auto</name>
-  <value>true</value>
-  <description> Let hive determine whether to run in local mode automatically </description>
-</property>
-<property>
-  <name>javax.jdo.option.ConnectionURL</name>
-  <!--<value>jdbc:derby:;databaseName=/tmp/metastore_db;create=true</value>-->
-  <value>jdbc:derby:memory:metastore_db;create=true</value>
-  <description>JDBC connect string for a JDBC metastore</description>
-</property>
+    <property>
+        <name>hive.exec.mode.local.auto</name>
+        <value>true</value>
+        <description>Let hive determine whether to run in local mode automatically</description>
+    </property>
 
-<property>
-  <name>hive.metastore.warehouse.dir</name>
-  <value>/tmp/warehouse</value>
-  <description>location of default database for the warehouse</description>
-</property>
+    <property>
+        <name>hive.mapred.local.mem</name>
+        <value>0</value>
+    </property>
 
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:derby:memory:metastore_db;create=true</value>
+        <description>JDBC connect string for a JDBC metastore</description>
+    </property>
+
+    <!--
+        This property is no longer required for executing
+        an embedded Hive instance if the EmbeddedHive class
+        is used. We recommend using EmbeddedHive.
+    -->
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>/tmp/warehouse</value>
+        <description>location of default database for the warehouse</description>
+    </property>
 </configuration>

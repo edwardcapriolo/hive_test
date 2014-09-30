@@ -15,17 +15,14 @@ limitations under the License.
 */
 package io.teknek.hiveunit;
 
-import io.teknek.hiveunit.HiveTestEmbedded;
-
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapred.JobConf;
 import org.junit.Assert;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class EmbeddedHiveExampleTest extends HiveTestEmbedded {
 
@@ -37,7 +34,7 @@ public class EmbeddedHiveExampleTest extends HiveTestEmbedded {
     super.setUp();
   }
 
-  public void testA() throws Exception {
+  public void testEmbeddedHive() throws Exception {
     Path p = new Path(this.ROOT_DIR, "afile");
 
     FSDataOutputStream o = this.getFileSystem().create(p);
@@ -51,6 +48,9 @@ public class EmbeddedHiveExampleTest extends HiveTestEmbedded {
     Assert.assertEquals(0, doHiveCommand("load data local inpath '" + p.toString() + "' into table bla", c));
     Assert.assertEquals(0, doHiveCommand("create table blb (id int)", c));
     Assert.assertEquals(1, doHiveCommand("create table bla (id int)", c));
+    Assert.assertEquals(0, doHiveCommand("select * from bla", c));
     Assert.assertEquals(0, doHiveCommand("select count(1) from bla", c));
+    Assert.assertEquals(0, doHiveCommand("select id from bla", c));
+
   }
 }

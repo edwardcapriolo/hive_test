@@ -15,17 +15,15 @@ limitations under the License.
 */
 package io.teknek.hiveunit;
 
-import io.teknek.hiveunit.EmbeddedHive;
-import io.teknek.hiveunit.HiveTestBase;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.Path;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.sql.SQLException;
 
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.Path;
-import org.junit.Assert;
+import static io.teknek.hiveunit.common.ResponseStatus.FAILURE;
+import static io.teknek.hiveunit.common.ResponseStatus.SUCCESS;
 
 
 public class EmbeddedHiveTest extends HiveTestBase {
@@ -34,8 +32,8 @@ public class EmbeddedHiveTest extends HiveTestBase {
     super();
   }
 
-  public void testUseEmbedded() throws IOException, SQLException {
-    EmbeddedHive eh = new EmbeddedHive();
+  public void testUseEmbedded() throws IOException {
+    EmbeddedHive eh = new EmbeddedHive(TestingUtil.getDefaultProperties());
     Path p = new Path(this.ROOT_DIR, "bfile");
 
     FSDataOutputStream o = this.getFileSystem().create(p);
@@ -44,10 +42,10 @@ public class EmbeddedHiveTest extends HiveTestBase {
     bw.write("2\n");
     bw.close();
 
-    Assert.assertEquals(0, eh.doHiveCommand("create table blax (id int)"));
-    Assert.assertEquals(0, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax"));
-    Assert.assertEquals(0, eh.doHiveCommand("create table blbx (id int)"));
-    Assert.assertEquals(1, eh.doHiveCommand("create table blax (id int)"));
-    Assert.assertEquals(0, eh.doHiveCommand("select count(1) from blax"));
+    assertEquals(SUCCESS, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
+    assertEquals(SUCCESS, eh.doHiveCommand("load data local inpath '" + p.toString() + "' into table blax").getResponseStatus());
+    assertEquals(SUCCESS, eh.doHiveCommand("create table blbx (id int)").getResponseStatus());
+    assertEquals(FAILURE, eh.doHiveCommand("create table blax (id int)").getResponseStatus());
+    assertEquals(SUCCESS, eh.doHiveCommand("select count(1) from blax").getResponseStatus());
   }
 }

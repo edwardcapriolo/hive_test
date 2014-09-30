@@ -15,48 +15,117 @@ limitations under the License.
 */
 package io.teknek.hiveunit;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import io.teknek.hiveunit.common.PropertyNames;
+import io.teknek.hiveunit.common.Response;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.ql.CommandNeedRetryException;
 import org.apache.hadoop.hive.ql.Driver;
 import org.apache.hadoop.hive.ql.processors.CommandProcessor;
 import org.apache.hadoop.hive.ql.processors.CommandProcessorFactory;
+import org.apache.hadoop.hive.ql.processors.CommandProcessorResponse;
 import org.apache.hadoop.hive.ql.session.SessionState;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class EmbeddedHive {
+  private static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
+  private static Logger logger = Logger.getLogger(EmbeddedHive.class.getName());
 
-  public SessionState ss;
-  public HiveConf c;
+  private SessionState ss;
+  private HiveConf c;
+  private File warehouseDir;
 
-  public EmbeddedHive() {
-    //SessionState.initHiveLog4j(); // gone in 0.8.0
-    ss = new SessionState(new HiveConf(EmbeddedHive.class));
+  /**
+   * Create embedded Hive
+   *
+   * @param properties - Properties
+   */
+  public EmbeddedHive(Properties properties) {
+    HiveConf conf = new HiveConf();
+    if (properties.get(PropertyNames.HIVE_JAR.toString()) != null) {
+      //this line may be required so that the embedded derby works well
+      //refers to dependencies containing ExecDriver class
+      conf.setVar(HiveConf.ConfVars.HIVEJAR, properties.get(PropertyNames.HIVE_JAR.toString()).toString());
+    }
+    //this property is required so that every test runs on a different warehouse location.
+    // This way we avoid conflicting scripts or dirty reexecutions
+    File tmpDir = new File(System.getProperty(JAVA_IO_TMPDIR));
+    warehouseDir = new File(tmpDir, UUID.randomUUID().toString());
+    warehouseDir.mkdir();
+    conf.setVar(HiveConf.ConfVars.METASTOREWAREHOUSE, warehouseDir.getAbsolutePath());
+
+    ss = new SessionState(new HiveConf(conf, EmbeddedHive.class));
     SessionState.start(ss);
-    c = (HiveConf) ss.getConf();
+    c = ss.getConf();
   }
 
-  public int doHiveCommand(String cmd) throws SQLException {
-    int ret = -40;
+  /**
+   * Execute Hive command
+   *
+   * @param cmd - hive command
+   * @return Response
+   */
+  public Response doHiveCommand(String cmd) {
+    ArrayList<String> results = new ArrayList<String>();
+    CommandProcessorResponse processorResponse = null;
     String cmd_trimmed = cmd.trim();
     String[] tokens = cmd_trimmed.split("\\s+");
     String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
-    CommandProcessor proc = CommandProcessorFactory.get(tokens, c);
-    
+    CommandProcessor proc = null;
+    try {
+      proc = CommandProcessorFactory.get(tokens, c);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
     if (proc instanceof Driver) {
       try {
-        ret = proc.run(cmd).getResponseCode();
+        processorResponse = proc.run(cmd);
       } catch (CommandNeedRetryException ex) {
-        Logger.getLogger(EmbeddedHive.class.getName()).log(Level.SEVERE, null, ex);
+        logger.log(Level.SEVERE, null, ex);
       }
     } else {
       try {
-        ret = proc.run(cmd_1).getResponseCode();
+        processorResponse = proc.run(cmd_1);
       } catch (CommandNeedRetryException ex) {
-        Logger.getLogger(EmbeddedHive.class.getName()).log(Level.SEVERE, null, ex);
+        logger.log(Level.SEVERE, null, ex);
       }
     }
-    return ret;
+    try {
+      if (proc instanceof org.apache.hadoop.hive.ql.Driver) {
+        ((Driver) proc).getResults(results);
+      } else {
+        logger.info(String.format(
+          "Processor of class %s is currently not supported for retrieving results", proc.getClass()
+        ));
+      }
+    } catch (IOException e) {
+      logger.log(Level.SEVERE, null, e);
+    } catch (CommandNeedRetryException e) {
+      logger.log(Level.SEVERE, null, e);
+    }
+    return new Response((processorResponse != null) ? processorResponse.getResponseCode() : -40, results);
+  }
+
+  /**
+   * Close connection and cleanup directory used for warehousing
+   */
+  public void close() {
+    try {
+      if (ss != null) {
+        ss.close();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    if (warehouseDir != null) {
+      warehouseDir.delete();
+    }
   }
 }

@@ -15,11 +15,7 @@ limitations under the License.
 */
 package io.teknek.hiveunit;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import com.google.common.collect.Lists;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hive.conf.HiveConf;
 import org.apache.hadoop.hive.ql.CommandNeedRetryException;
@@ -27,6 +23,12 @@ import org.apache.hadoop.hive.ql.Driver;
 import org.apache.hadoop.hive.ql.processors.CommandProcessor;
 import org.apache.hadoop.hive.ql.processors.CommandProcessorFactory;
 import org.apache.hadoop.hive.ql.session.SessionState;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class HiveTestEmbedded extends HiveTestBase {
 
@@ -45,21 +47,29 @@ public abstract class HiveTestEmbedded extends HiveTestBase {
     c = (HiveConf) ss.getConf();
   }
 
-  public int doHiveCommand(String cmd, Configuration h2conf) throws SQLException {
+  public int doHiveCommand(String cmd, Configuration h2conf) {
     int ret = 40;
     String cmd_trimmed = cmd.trim();
     String[] tokens = cmd_trimmed.split("\\s+");
     String cmd_1 = cmd_trimmed.substring(tokens[0].length()).trim();
     CommandProcessor proc = null;
 
+    try {
+      proc = CommandProcessorFactory.get(tokens, c);
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
 
-    proc = CommandProcessorFactory.get(tokens, c);
+    ArrayList<String> out = Lists.newArrayList();
 
     if (proc instanceof Driver) {
       try {
         ret = proc.run(cmd).getResponseCode();
+        ((Driver) proc).getResults(out);
       } catch (CommandNeedRetryException ex) {
         Logger.getLogger(HiveTestEmbedded.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (IOException e) {
+        e.printStackTrace();
       }
     } else {
       try {
