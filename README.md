@@ -45,9 +45,9 @@ Declare the Maven dependency in your pom.xml file
         <dependencies>
             ...
                 <dependency>
-                    <groupId>com.jointhegrid</groupId>
-                    <artifactId>hive_test</artifactId>
-                    <version>4.3.0-SNAPSHOT</version>
+                    <groupId>io.teknek</groupId>
+                    <artifactId>hiveunit</artifactId>
+                    <version>0.0.3</version>
                     <classifier>jar-with-dependencies</classifier>
                 </dependency>
              ...
